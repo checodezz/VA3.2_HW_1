@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Calorie Details</title>
+</head>
+
+<body>
+  <header>
+    <a href="./index.html">MyHealth</a>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="./calorie.html">Calories</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="calorieDetails">
+
+    </section>
+  </main>
+
+  <footer></footer>
+
+  <script>
+    //database
+    let caloriesArr = [{
+      id: '1',
+      meal: 'Breakfast',
+      itemName: 'Dosa',
+      calories: "200Cal"
+    },
+    {
+      id: '2',
+      meal: 'Lunch',
+      itemName: 'Biryani',
+      calories: '1000Cal'
+    },
+    {
+      id: '3',
+      meal: 'Dinner',
+      itemName: 'Curd Rice',
+      calories: '500Cal'
+    }]
+
+
+
+
+    function getParameterById(id) {
+      //get the id from the url
+      // console.log(window.location.href)
+      let url = new URL(window.location.href)
+      return url.searchParams.get(id)
+    }
+    let calorieId = getParameterById('id')
+
+    //find the id in the database
+    let calorie;
+    for (let i = 0; i < caloriesArr.length; i++) {
+      if (caloriesArr[i].id === calorieId) {
+        calorie = caloriesArr[i]
+      }
+    }
+    // console.log(calorie)    
+
+    //display the details  on the view
+
+    let calorieDetailElement = document.getElementById('calorieDetails')
+    if (calorie) {
+      console.log(calorieDetailElement)
+      calorieDetailElement.innerHTML = `
+      <h2>${calorie.meal}</h2>
+      <ul>
+      <li>Meal : ${calorie.meal} </li>
+      <li>Item : ${calorie.itemName}</li>
+      <li>Calories : ${calorie.calories} </li>
+      </ul>    
+      `
+    } else {
+      calorieDetailElement.innerHTML = 'Meal not found'
+    }
+  </script>
+</body>
+
+</html>
