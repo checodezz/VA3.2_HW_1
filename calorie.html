@@ -3,31 +3,20 @@
 
 <head>
   <title>Calories</title>
-  <link
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossorigin="anonymous"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  
+
 </head>
 
 <body>
   <header>
     <nav class="text-secondary navbar navbar-expand-lg">
-    <div class="container">
+      <div class="container">
         <a class="navbar-brand" href="index.html">Calorie & Workout Report</a>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -48,49 +37,115 @@ href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
     </nav>
   </header>
 
-  <main>
   <section class="container">
-    <h2>Calorie Report</h2>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-header">
-            <h2>Breakfast</h2>
-          </div>
-          <div class="card-body">
-            <p><strong>Calories Consumed</strong> : 290</p>
-            <p><strong>Meals</strong> : Pancakes</p>
-          </div>
-        </div>
+    <form>
+      <div class="mb-3">
+        <label for="inputDay">Day:</label><br>
+        <input class="form-control" type="text" id="inputDay" required>
       </div>
 
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-header">
-            <h2>Lunch</h2>
-          </div>
-          <div class="card-body">
-            <p><strong>Calories Consumed</strong> : 140</p>
-            <p><strong>Meals</strong> : Veg Salad</p>
-          </div>
-        </div>
+      <div class="mb-3">
+        <label for="inputCaloriesConsumed">Calories Consumed: </label><br>
+        <input class="form-control" id="inputCaloriesConsumed" type="number" required>
       </div>
 
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-header">
-            <h2>Dinner</h2>
-          </div>
-          <div class="card-body">
-            <p><strong>Calories Consumed</strong> : 240</p>
-            <p><strong>Meals</strong> : Chicken Fried Rice</p>
-          </div>
-        </div>
+      <div class="mb-3">
+        <label for="inputCaloriesBurned">Calories Burned: </label><br>
+        <input class="form-control" type="number" id="inputCaloriesBurned">
       </div>
-      
+
+      <button class="btn btn-primary" type="button" id="addCaloriesBtn">Add Calories: </button>
+    </form>
+  </section>
+
+  <section class="container mt-4">
+    <div id="calorieList" class="row">
     </div>
   </section>
-  </main>
+
+
+  <script>
+
+    const calorieDetails = [
+      {
+        id: 1,
+        days: 'Day 1',
+        calorieConsumed: 2000,
+        calorieBurned: 300
+      },
+      {
+        id: 2,
+        days: 'Day 2',
+        calorieConsumed: 1800,
+        calorieBurned: 400
+      }
+    ];
+
+    const addCaloriesBtn = document.querySelector('#addCaloriesBtn')
+    const calorieList = document.querySelector('#calorieList')
+
+    function updateCalorieReport(data) {
+      calorieList.innerHTML = ''
+
+      for (let i = 0; i < data.length; i++) {
+        const col = document.createElement('div')
+        col.className = 'col-md-4'
+
+        const card = document.createElement('div')
+        card.className = 'card mb-3 container'
+
+        const cardHeader = document.createElement('div')
+        cardHeader.className = 'card-header'
+
+        const h2 = document.createElement('h2')
+        h2.textContent = data[i].days
+
+        cardHeader.appendChild(h2)
+
+        const cardBody = document.createElement('div')
+        cardBody.className = 'card-body'
+
+        const caloriesConsumed = document.createElement('p')
+        caloriesConsumed.className = 'card-text'
+        caloriesConsumed.innerHTML = `<strong>Calories Consumed: 
+ </strong>${data[i].calorieConsumed}`
+
+        const caloriesBurned = document.createElement('p')
+        caloriesBurned.className = 'card-text'
+        caloriesBurned.innerHTML = `<strong>Calories Burned: </strong>${data[i].calorieBurned}`
+
+        card.appendChild(cardHeader)
+        cardBody.appendChild(caloriesConsumed)
+        cardBody.appendChild(caloriesBurned)
+        card.appendChild(cardBody)
+
+        col.appendChild(card)
+        calorieList.appendChild(col)
+      }
+    }
+
+    addCaloriesBtn.addEventListener('click', function () {
+      const inputDay = document.querySelector('#inputDay').value
+      const inputCaloriesConsumed = document.querySelector('#inputCaloriesConsumed').value
+      const inputCaloriesBurned = document.querySelector('#inputCaloriesBurned').value
+
+      if (inputDay && inputCaloriesConsumed && inputCaloriesBurned) {
+        const calorieInputId = calorieDetails.length + 1
+        const newCalorieInput = {
+          id: calorieInputId,
+          days: inputDay,
+          calorieConsumed: inputCaloriesConsumed,
+          calorieBurned: inputCaloriesBurned
+        }
+        calorieDetails.push(newCalorieInput)
+        updateCalorieReport(calorieDetails)
+      }
+    })
+
+
+    updateCalorieReport(calorieDetails)
+
+  </script>
 </body>
 
 </html>
